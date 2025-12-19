@@ -40,7 +40,7 @@ function onClickedEstimatePrice() {
     bhk: bhk,      
     bath: bathrooms,
     location: location.value
-},, function(data, status) {
+}, function(data, status) {
         console.log("Prediction received:", data.estimated_price);
         estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
     }).fail(function() {
