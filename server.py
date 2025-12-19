@@ -3,6 +3,11 @@ import util
 
 app = Flask(__name__, template_folder='templates')
 
+# --- FIX: Move this ABOVE the routes so it runs on Render/Gunicorn ---
+print("🔍 Initializing artifacts before starting routes...")
+util.load_saved_artifacts()
+# -------------------------------------------------------------------
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -31,14 +36,16 @@ def predict_home_price():
 
         estimated_price = util.get_estimated_price(location, total_sqft, bhk, bath)
         
-        return jsonify({
+        response = jsonify({
             'estimated_price': estimated_price
         })
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+        
     except Exception as e:
-        print(f"Error occurred: {e}") # This will show in Render logs
+        print(f"Error occurred: {e}") 
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     print("Starting Python Flask Server For Home Price Prediction")
-    util.load_saved_artifacts()
     app.run(host='0.0.0.0')
