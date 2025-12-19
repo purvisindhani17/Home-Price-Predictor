@@ -35,12 +35,12 @@ function onClickedEstimatePrice() {
 
     var url = "/predict_home_price"; 
 
-    $.post(url, {
-        total_sqft: parseFloat(sqft.value),
-        bhk: bhk,
-        bath: bathrooms,
-        location: location.value
-    }, function(data, status) {
+   $.post(url, {
+    total_sqft: parseFloat(sqft.value),
+    bhk: bhk,      
+    bath: bathrooms,
+    location: location.value
+},, function(data, status) {
         console.log("Prediction received:", data.estimated_price);
         estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
     }).fail(function() {
