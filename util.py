@@ -10,18 +10,19 @@ __model = None
 
 def get_estimated_price(location, sqft, bhk, bath):
     try:
+        # Standardize to lowercase to match columns.json keys
         loc_index = __data_columns.index(location.lower())
-    except:
+    except ValueError:
         loc_index = -1
 
     x = np.zeros(len(__data_columns))
     x[0] = sqft
     x[1] = bath
     x[2] = bhk
-
     if loc_index >= 0:
         x[loc_index] = 1
 
+    # Ensure the model is loaded before predicting
     return round(__model.predict([x])[0], 2)
 
 
